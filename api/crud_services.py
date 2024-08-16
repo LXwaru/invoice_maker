@@ -38,4 +38,4 @@ def delete_service(
         return{"detail": "Service successfully deleted"}
     except NoResultFound:
         db.rollback()
-        return {"detail": "User not found"}
+        return {"detail": "Service not found"}

@@ -13,7 +13,7 @@ from sqlalchemy.orm import Session
 router = APIRouter()
 
 
-@router.post('/api/services/', response_model=schemas.ServiceIn)
+@router.post('/api/services/', response_model=schemas.ServiceOut)
 def create_service(
     service: schemas.ServiceIn,
     db: Session = Depends(utils_db.get_db)

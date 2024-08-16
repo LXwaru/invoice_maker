@@ -16,7 +16,6 @@ class ServiceOut(ServiceIn):
     
 
 class ServiceItemIn(BaseModel):
-    item: ServiceOut
     teacher_id: int
     service_id: int
 
