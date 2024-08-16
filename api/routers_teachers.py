@@ -22,9 +22,25 @@ def create_teacher(
     return crud.create_teacher(db=db, teacher=teacher)
 
 
-@router.get("/api/teacher", response_model=schemas.Teacher)
+@router.get("/api/teacher/{teacher_id}", response_model=schemas.Teacher)
 def get_teacher(
     teacher_id: int,
     db: Session = Depends(utils_db.get_db)
 ):
     return crud.get_teacher_by_id(db=db, teacher_id=teacher_id)
+
+@router.get("/api/teachers", response_model=list[schemas.Teacher])
+def list_teachers(
+    skip: int = 0, 
+    limit: int = 100, 
+    db: Session = Depends(utils_db.get_db)
+):
+    teachers = crud.get_teachers(db, skip=skip, limit=limit)
+    return teachers
+
+@router.delete("/api/teacher/{teacher_id}/")
+def delete_teacher(
+    teacher_id: int,
+    db: Session = Depends(utils_db.get_db)
+):
+    return crud.delete_teacher(db, teacher_id)

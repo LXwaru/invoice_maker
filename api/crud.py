@@ -15,8 +15,8 @@ def get_teacher_by_name(db: Session, full_name: str):
 def get_teacher_by_id(db: Session, teacher_id: int):
     return db.query(models.Teacher).filter(models.Teacher.id == teacher_id).first()
 
-# def get_teachers(db: Session, skip: int = 0, limit: int = 100):
-#     return db.query(models.Teacher).offset(skip).limit(limit).all()
+def get_teachers(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Teacher).offset(skip).limit(limit).all()
 
 
 def create_teacher(db: Session, teacher: schemas.TeacherBase):
@@ -25,6 +25,19 @@ def create_teacher(db: Session, teacher: schemas.TeacherBase):
     db.commit()
     db.refresh(db_teacher)
     return db_teacher
+
+def delete_teacher(
+        db: Session,
+        teacher_id: int
+):
+    try:
+        teacher = db.query(models.Teacher).filter(models.Teacher.id == teacher_id).one()
+        db.delete(teacher)
+        db.commit()
+        return{"detail": "User successfully deleted"}
+    except NoResultFound:
+        db.rollback()
+        return {"detail": "User not found"}
 
 
 # def get_services(db: Session, skip: int = 0, limit: int = 100):
