@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 from datetime import datetime
 
@@ -13,7 +13,7 @@ class Teacher(Base):
     name = Column(String, unique=True, index=True)
     is_active = Column(Boolean, default=True)
 
-    services = relationship("ServiceItem", back_populates="teacher")
+    service_items = relationship("ServiceItem", back_populates="teacher")
     invoices = relationship("Invoice", back_populates="teacher")
 
 
@@ -23,22 +23,18 @@ class Service(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String, index=True)
     price = Column(Integer, index=True)
-    date_completed = Column(String, index=True)
 
-    def __repr__(self):
-        return f"<Service(title='{self.title}', price='{self.price}')>"
-    
 
 class ServiceItem(Base):
     __tablename__ = "service_items"
 
-    id = id = Column(Integer, primary_key=True)
-    item = Column(String, index=True)
-    date_completed = Column(String, index=True)
+    id = Column(Integer, primary_key=True)
+    date_time = Column(DateTime, default=datetime.now, index=True)
     teacher_id = Column(Integer, ForeignKey("teachers.id"))
+    service_id = Column(Integer, ForeignKey('services.id'))
 
-    teacher = relationship("Teacher", back_populates="services")
-    invoices = relationship("Invoice", back_populates="services")
+    teacher = relationship("Teacher", back_populates="service_items")
+    # invoices = relationship("Invoice", back_populates="service_items")
 
 
 class Invoice(Base):
@@ -48,8 +44,6 @@ class Invoice(Base):
     amount_due = Column(Integer, index=True)
     paid = Column(Boolean, index=True)
     teacher_id = Column(Integer, ForeignKey("teachers.id"))
-    service_item_id = Column(Integer, ForeignKey('service_items.id'))
 
     teacher = relationship("Teacher", back_populates="invoices")
-    services = relationship("ServiceItem", back_populates="invoices")
 

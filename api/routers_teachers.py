@@ -6,8 +6,9 @@ from fastapi import (
     APIRouter,
     Request,
 )
-from . import schemas, crud, utils_db
+from . import schemas, crud_teachers, utils_db
 from sqlalchemy.orm import Session
+
 
 router = APIRouter()
 
@@ -15,11 +16,12 @@ router = APIRouter()
 @router.post("/api/teachers", response_model=schemas.TeacherBase)
 def create_teacher(
     teacher: schemas.TeacherBase, 
-    db: Session = Depends(utils_db.get_db)):
-    db_teacher = crud.get_teacher_by_name(db, full_name=teacher.full_name)
+    db: Session = Depends(utils_db.get_db)
+):
+    db_teacher = crud_teachers.get_teacher_by_name(db, full_name=teacher.full_name)
     if db_teacher:
         raise HTTPException(status_code=400, detail="teacher name already registered")
-    return crud.create_teacher(db=db, teacher=teacher)
+    return crud_teachers.create_teacher(db=db, teacher=teacher)
 
 
 @router.get("/api/teacher/{teacher_id}", response_model=schemas.Teacher)
@@ -27,7 +29,7 @@ def get_teacher(
     teacher_id: int,
     db: Session = Depends(utils_db.get_db)
 ):
-    return crud.get_teacher_by_id(db=db, teacher_id=teacher_id)
+    return crud_teachers.get_teacher_by_id(db=db, teacher_id=teacher_id)
 
 @router.get("/api/teachers", response_model=list[schemas.Teacher])
 def list_teachers(
@@ -35,7 +37,7 @@ def list_teachers(
     limit: int = 100, 
     db: Session = Depends(utils_db.get_db)
 ):
-    teachers = crud.get_teachers(db, skip=skip, limit=limit)
+    teachers = crud_teachers.get_teachers(db, skip=skip, limit=limit)
     return teachers
 
 @router.delete("/api/teacher/{teacher_id}/")
@@ -43,4 +45,4 @@ def delete_teacher(
     teacher_id: int,
     db: Session = Depends(utils_db.get_db)
 ):
-    return crud.delete_teacher(db, teacher_id)
+    return crud_teachers.delete_teacher(db, teacher_id)
