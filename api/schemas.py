@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import Union
+from typing import Union, Optional
 
 # create and add to the list of available services
 class ServiceIn(BaseModel):
@@ -32,7 +32,7 @@ class TeacherBase(BaseModel):
 
 class Teacher(TeacherBase):
     id: int
-    services_taught: list[ServiceItemOut]
+    service_items: list[ServiceItemOut] = []
 
     class Config:
         orm_mode = True

@@ -12,6 +12,9 @@ def get_teacher_by_name(db: Session, full_name: str):
     return db.query(models.Teacher).filter(models.Teacher.full_name == full_name).first()
 
 
+def get_teacher_by_id(db: Session, teacher_id: int):
+    return db.query(models.Teacher).filter(models.Teacher.id == teacher_id).first()
+
 # def get_teachers(db: Session, skip: int = 0, limit: int = 100):
 #     return db.query(models.Teacher).offset(skip).limit(limit).all()
 
