@@ -40,15 +40,16 @@ class Teacher(TeacherBase):
 
 
 class InvoiceCreate(BaseModel):
-    teacher: Teacher
-    services: list[ServiceItemOut]
+    teacher_id: int
+    start_date: datetime
+    end_date: datetime
+
 
 
 class Invoice(InvoiceCreate):
     id: int
     amount_due: int
     paid: bool
-    payment_method: Union[str, None] = None
 
     class Config:
         orm_mode = True

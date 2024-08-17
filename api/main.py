@@ -2,13 +2,19 @@ from fastapi import Depends, FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from .database import SessionLocal
 
-from . import routers_teachers, routers_services, routers_service_item
+from . import (
+    routers_teachers, 
+    routers_services, 
+    routers_service_item, 
+    routers_invoices
+)
 
 
 app = FastAPI()
 app.include_router(routers_teachers.router, tags=["TEACHERS"])
 app.include_router(routers_services.router, tags=["SERVICES"])
 app.include_router(routers_service_item.router, tags=["SERVICE_ITEMS"])
+app.include_router(routers_invoices.router, tags=["INVOICES"])
 
 origins = [
     "http://localhost:5173",

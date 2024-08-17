@@ -1,6 +1,6 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from .database import Base
 
@@ -42,8 +42,10 @@ class Invoice(Base):
 
     id = Column(Integer, primary_key=True)
     amount_due = Column(Integer, index=True)
-    paid = Column(Boolean, index=True)
+    paid = Column(Boolean, default=False)
     teacher_id = Column(Integer, ForeignKey("teachers.id"))
+    start_date = Column(DateTime, index=True)
+    end_date = Column(DateTime, index=True)
 
     teacher = relationship("Teacher", back_populates="invoices")
 
