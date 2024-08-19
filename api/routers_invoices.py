@@ -28,3 +28,12 @@ def create_invoice(
         end_date=end_date
     )
     return invoice
+
+
+@router.get('/api/invoices', response_model=list[schemas.Invoice])
+def list_invoices(
+    skip: int = 0, 
+    limit: int = 100,
+    db: Session = Depends(utils_db.get_db)
+):
+    return crud_invoices.list_invoices(db=db, skip=skip, limit=limit)

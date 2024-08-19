@@ -32,9 +32,12 @@ class ServiceItem(Base):
     date_time = Column(DateTime, default=datetime.now, index=True)
     teacher_id = Column(Integer, ForeignKey("teachers.id"))
     service_id = Column(Integer, ForeignKey('services.id'))
+    invoice_id = Column(Integer, ForeignKey('invoices.id'))
 
     teacher = relationship("Teacher", back_populates="service_items")
-    # invoices = relationship("Invoice", back_populates="service_items")
+    service = relationship("Service")
+    invoices = relationship("Invoice", back_populates="service_items")
+
 
 
 class Invoice(Base):
@@ -48,4 +51,5 @@ class Invoice(Base):
     end_date = Column(DateTime, index=True)
 
     teacher = relationship("Teacher", back_populates="invoices")
+    service_items = relationship("ServiceItem", back_populates="invoices")
 

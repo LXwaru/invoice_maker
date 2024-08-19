@@ -34,4 +34,15 @@ def create_invoice(
     db.add(new_invoice)
     db.commit()
     db.refresh(new_invoice)
+
+    db.query(models.ServiceItem).filter(
+        models.ServiceItem.teacher_id == teacher_id,
+        models.ServiceItem.date_time >= start_date,
+        models.ServiceItem.date_time <= end_date
+    ).update({'invoice_id': new_invoice.id})
+
     return new_invoice
+
+
+def list_invoices(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Invoice).offset(skip).limit(limit).all()

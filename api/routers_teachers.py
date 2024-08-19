@@ -13,7 +13,7 @@ from sqlalchemy.orm import Session
 router = APIRouter()
 
 
-@router.post("/api/teachers", response_model=schemas.TeacherBase)
+@router.post("/api/teachers", response_model=schemas.Teacher)
 def create_teacher(
     teacher: schemas.TeacherBase, 
     db: Session = Depends(utils_db.get_db)
