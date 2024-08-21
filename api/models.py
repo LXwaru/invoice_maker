@@ -1,6 +1,6 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, TIMESTAMP
 from sqlalchemy.orm import relationship
-from datetime import datetime, timedelta
+from datetime import datetime, timezone
 
 from .database import Base
 
@@ -29,7 +29,7 @@ class ServiceItem(Base):
     __tablename__ = "service_items"
 
     id = Column(Integer, primary_key=True)
-    date_time = Column(DateTime, default=datetime.now, index=True)
+    date_time = Column(TIMESTAMP(timezone=True), default=datetime.now)
     teacher_id = Column(Integer, ForeignKey("teachers.id"))
     service_id = Column(Integer, ForeignKey('services.id'))
     invoice_id = Column(Integer, ForeignKey('invoices.id'))

@@ -45,12 +45,11 @@ class InvoiceCreate(BaseModel):
     end_date: datetime
 
 
-
 class Invoice(InvoiceCreate):
     id: int
     amount_due: int
     paid: bool
-    service_items: List[ServiceItemOut]
+    service_items: list[ServiceItemOut] = []
 
     class Config:
         orm_mode = True

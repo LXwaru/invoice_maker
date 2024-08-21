@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
+
 const ClassEntry = () => {
     const [teacherId, setTeacherId] = useState(0)
     const [teachers, setTeachers] = useState([])
@@ -33,7 +34,7 @@ const ClassEntry = () => {
         e.preventDefault()
         console.log('selected teacher', teacherId)
         console.log('selected service', serviceId)
-        try{
+        try {
             await axios.post('http://localhost:8000/api/service_items/', 
                 {
                 teacher_id: teacherId,
@@ -49,27 +50,30 @@ const ClassEntry = () => {
 
 return(
     <>
-        <form onSubmit={handleSubmit}>
-            <h3>Teacher</h3>
-            <select value={teacherId} onChange={(e) => setTeacherId(e.target.value)}>
-                <option value={0}>select teacher</option>
-                {teachers.map((t) => (
-                    <option key={t.id} value={t.id}>
-                        {t.full_name}
-                    </option>
-                ))}
-            </select>
-            <h3>Class Type</h3>
-            <select value={serviceId} onChange={(e) => setServiceId(e.target.value)}>
-                <option value={0}>select class type</option>
-                {services.map((s) => (
-                    <option key={s.id} value={s.id}>
-                        {s.title}
-                    </option>
-                ))}
-            </select><br />
-            <button type="submit">submit</button>
-        </form>
+        <div className="container-md">
+            <hr />
+            <form onSubmit={handleSubmit}>
+                <h3>Teacher</h3>
+                <select className="form-select" value={teacherId} onChange={(e) => setTeacherId(e.target.value)}>
+                    <option value={0}>select teacher</option>
+                    {teachers.map((t) => (
+                        <option key={t.id} value={t.id}>
+                            {t.full_name}
+                        </option>
+                    ))}
+                </select>
+                <h3>Class Type</h3>
+                <select className="form-select" value={serviceId} onChange={(e) => setServiceId(e.target.value)}>
+                    <option value={0}>select class type</option>
+                    {services.map((s) => (
+                        <option key={s.id} value={s.id}>
+                            {s.title}
+                        </option>
+                    ))}
+                </select><br />
+                <button type="submit">submit</button>
+            </form>
+        </div>
 
     </>
 )

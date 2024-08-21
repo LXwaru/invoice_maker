@@ -13,7 +13,7 @@ from sqlalchemy.orm import Session
 router = APIRouter()
 
 
-@router.post("/api/teachers", response_model=schemas.Teacher)
+@router.post("/api/teachers/", response_model=schemas.Teacher)
 def create_teacher(
     teacher: schemas.TeacherBase, 
     db: Session = Depends(utils_db.get_db)
@@ -24,14 +24,14 @@ def create_teacher(
     return crud_teachers.create_teacher(db=db, teacher=teacher)
 
 
-@router.get("/api/teacher/{teacher_id}", response_model=schemas.Teacher)
+@router.get("/api/teacher/{teacher_id}/", response_model=schemas.Teacher)
 def get_teacher(
     teacher_id: int,
     db: Session = Depends(utils_db.get_db)
 ):
     return crud_teachers.get_teacher_by_id(db=db, teacher_id=teacher_id)
 
-@router.get("/api/teachers", response_model=list[schemas.Teacher])
+@router.get("/api/teachers/", response_model=list[schemas.Teacher])
 def list_teachers(
     skip: int = 0, 
     limit: int = 100, 

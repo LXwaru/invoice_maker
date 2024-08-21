@@ -21,7 +21,7 @@ def create_service_item(
     return crud_service_item.create_service_item(db=db, service_item=service_item)
 
 
-@router.get('/api/service_items', response_model=list[schemas.ServiceItemOut])
+@router.get('/api/service_items/', response_model=list[schemas.ServiceItemOut])
 def list_service_items(
         skip: int = 0, 
         limit: int = 100,
