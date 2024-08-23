@@ -42,6 +42,7 @@ const ClassEntry = () => {
                 }
             )
             alert('class sign in successful')
+            window.location.reload()
         } catch (error) {
             console.error('class sign in failed')
         }
@@ -50,31 +51,42 @@ const ClassEntry = () => {
 
 return(
     <>
-        <div className="container-md">
-            <hr />
-            <form onSubmit={handleSubmit}>
-                <h3>Teacher</h3>
-                <select className="form-select" value={teacherId} onChange={(e) => setTeacherId(e.target.value)}>
-                    <option value={0}>select teacher</option>
-                    {teachers.map((t) => (
-                        <option key={t.id} value={t.id}>
-                            {t.full_name}
-                        </option>
-                    ))}
-                </select>
-                <h3>Class Type</h3>
-                <select className="form-select" value={serviceId} onChange={(e) => setServiceId(e.target.value)}>
-                    <option value={0}>select class type</option>
-                    {services.map((s) => (
-                        <option key={s.id} value={s.id}>
-                            {s.title}
-                        </option>
-                    ))}
-                </select><br />
-                <button type="submit">submit</button>
-            </form>
-        </div>
-
+        <form className="form-control" onSubmit={handleSubmit}>
+            <h3>Class Sign in</h3>
+            <table className="table">
+                <thead>
+                    <tr>
+                        <td>Select Teacher</td>
+                        <td>Select Service</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <select className="form-select" value={teacherId} onChange={(e) => setTeacherId(e.target.value)}>
+                                <option value={0}>select teacher</option>
+                                    {teachers.map((t) => (
+                                    <option key={t.id} value={t.id}>
+                                    {t.full_name}
+                                </option>
+                                ))}
+                            </select>
+                        </td>
+                        <td>
+                            <select className="form-select" value={serviceId} onChange={(e) => setServiceId(e.target.value)}>
+                                <option value={0}>select class type</option>
+                                    {services.map((s) => (
+                                    <option key={s.id} value={s.id}>
+                                    {s.title}
+                                </option>
+                                ))}
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button>submit</button>
+        </form>
     </>
 )
 }

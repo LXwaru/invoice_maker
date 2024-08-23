@@ -40,7 +40,6 @@ const ListInvoices = () => {
 
     return (
             <>
-            <hr />
             <h3>Invoice List</h3>
             <table className="table">
                 <thead>
@@ -62,7 +61,7 @@ const ListInvoices = () => {
                     <tr key = {invoice.id}>
                         <td>{new Date(invoice.start_date).toLocaleDateString()}</td>
                         <td>{getTeacherName(invoice.teacher_id)}</td> 
-                        <td>${invoice.amount_due.toFixed(2)}</td>
+                        <td className="money" >${invoice.amount_due.toFixed(2)}</td>
                         <td> <Link to={`/invoicedetail/${invoice.id}`}>See Invoice Details</Link></td>
                     </tr>
                 ))

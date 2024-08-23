@@ -59,24 +59,36 @@ const CreateInvoice = () => {
     }
     return (
         <>
-            <hr />
-            <div className="container-md">                
-                <form onSubmit={handleSubmit}>
-                    <h3>Teacher</h3>
-                    <select className="form-select" value={teacherId} onChange={(e) => setTeacherId(e.target.value)}>
-                        <option value={0}>select teacher</option>
-                        {teachers.map((t) => (
-                            <option key={t.id} value={t.id}>
-                                {t.full_name}
-                            </option>
-                        ))}
-                    </select>
-                    <h3>Choose a date</h3>
-                    <DatePicker className="form-select"selected={startDate} onChange={(date) => setStartDate(date)} />
-                    <br />
-                    <button type='submit'>submit</button>
-                </form>
-            </div>
+            <form className="form-control" onSubmit={handleSubmit}>
+                <h3>Create Invoice</h3>
+                <table className='table'>
+                    <thead>
+                        <tr>
+                            <td>Select a teacher</td>
+                            <td>Choose The Date</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                            <select className="form-select" value={teacherId} onChange={(e) => setTeacherId(e.target.value)}>
+                                <option value={0}>select teacher</option>
+                                {teachers.map((t) => (
+                                    <option key={t.id} value={t.id}>
+                                    {t.full_name}
+                                </option>
+                                ))}
+                                </select>
+                            </td>
+                            <td>
+                                <DatePicker className="form-select"selected={startDate} onChange={(date) => setStartDate(date)} />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type='submit'>submit</button>
+            </form>
+
         </>
     )
 

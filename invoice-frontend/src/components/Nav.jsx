@@ -2,11 +2,24 @@ import { NavLink } from "react-router-dom"
 
 const Nav = () => {
     return (
-        <div className="navbar">
-            <NavLink to="/">CLASS SIGN IN</NavLink>
-            <NavLink to="/createinvoice">CREATE INVOICE</NavLink>
-            <NavLink to="/listinvoice">LIST INVOICES</NavLink>
-            <NavLink to="/createteacher">REGISTER NEW TEACHER</NavLink>
+        <div className='nav'>
+            <ul className="nav fixed-top justify-content-center">
+                <li className="nav-item">
+                    <NavLink className="nav-link" to="/">CLASS SIGN IN</NavLink>
+                </li>
+                <li className="nav-item">
+                    <NavLink className="nav-link" to="/createinvoice">CREATE INVOICE</NavLink>      
+                </li>
+                <li className="nav-item">
+                    <NavLink className="nav-link" to="/listinvoice">LIST INVOICES</NavLink>
+                </li>
+                <li className="nav-item">
+                    <NavLink className="nav-link" to="/createteacher">REGISTER NEW TEACHER</NavLink>
+                </li>
+                <li className="nav-item">
+                    <NavLink className="nav-link" to='/createservice'>REGISTER NEW SERVICE</NavLink>
+                </li>
+            </ul>
         </div>
     )
 }

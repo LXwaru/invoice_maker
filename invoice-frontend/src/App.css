@@ -2,7 +2,7 @@
   max-width: 1280px;
   margin: 0 auto;
   padding: 1rem;
-  text-align: center;
+  text-align: left;
 }
 
 .logo {
@@ -39,4 +39,30 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.no-bullets {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+li {
+  text-align: left;
+}
+
+.money {
+  text-align: right;
+}
+
+.nav {
+  padding: 25px;
+}
+
+.general-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.max-width {
+  grid-column: 1
 }

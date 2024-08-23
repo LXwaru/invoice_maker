@@ -64,9 +64,11 @@ const InvoiceDetail = () => {
             <h5>Amount Due: ${invoice.amount_due.toFixed(2)}</h5>
             <h5>Paid: {invoice.paid ? 'Yes' : 'No' } </h5>
             <h5>Services:</h5>
+            <ol>
                 {invoice.service_items.map((item) => (
-                    <p key={item.id} className="border">{getServiceTitle(item.service_id)}</p>
+                    <li key={item.id}>{getServiceTitle(item.service_id)}</li>
                 ))}
+            </ol>
         </div>
         </>
     )
