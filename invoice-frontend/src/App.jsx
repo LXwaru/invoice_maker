@@ -6,7 +6,9 @@ import ListInvoices from './components/ListInvoice'
 import InvoiceDetail from './components/InvoiceDetail'
 import CreateTeacher from './components/CreateTeacher'
 import CreateService from './components/CreateService'
+import DeleteTeacher from './components/DeleteTeacher'
 import Nav from './components/Nav'
+import Footer from './components/Footer'
 
 function App() {
 
@@ -22,8 +24,10 @@ function App() {
               <Route path='/invoicedetail/:id' element={<InvoiceDetail />} />
               <Route path='/createteacher' element={<CreateTeacher />} />
               <Route path='/createservice' element={<CreateService />} />
+              <Route path='/deleteteacher' element={<DeleteTeacher />} />
             </Routes>
         </div>
+        <Footer />
       </BrowserRouter>
     </>
   )
