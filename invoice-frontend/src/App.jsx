@@ -4,6 +4,7 @@ import ClassEntry from './components/ClassEntry'
 import CreateInvoice from './components/CreateInvoice'
 import ListInvoices from './components/ListInvoice'
 import InvoiceDetail from './components/InvoiceDetail'
+import CreateTeacher from './components/CreateTeacher'
 import Nav from './components/Nav'
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
               <Route path='/createinvoice' element={< CreateInvoice />} />
               <Route path='/listinvoice' element={< ListInvoices />} />
               <Route path='/invoicedetail/:id' element={<InvoiceDetail />} />
+              <Route path='/createteacher' element={<CreateTeacher />} />
             </Routes>
         </div>
       </BrowserRouter>

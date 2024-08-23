@@ -48,7 +48,7 @@ const ListInvoices = () => {
                         <td>Date</td>
                         <td>Teacher Name</td>
                         <td>Amount Due</td>
-                        {/* <td>is paid?</td> */}
+                        <td></td>
                     </tr>
                 </thead>
                 <tbody>
