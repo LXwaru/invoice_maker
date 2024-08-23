@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom';
 import axios from 'axios'
 
 const ListInvoices = () => {
     const [ invoices, setInvoices ] = useState([])
     const [ teachers, setTeachers ] = useState([])
 
+
     useEffect(() => {
 
         const fetchInvoices = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/api/invoices/')
-                console.log(response.data)
+                console.log("invoices:", response.data)
                 setInvoices(response.data)
             } catch (error) {
                 console.error('could not fetch invoice', error)
@@ -22,17 +24,19 @@ const ListInvoices = () => {
     useEffect(() => {
         const fetchTeachers = async () => {
             const response = await axios.get('http://localhost:8000/api/teachers/')
-            console.log(response.data)
+            console.log("teachers:", response.data)
             setTeachers(response.data)
 
         }
         fetchTeachers()
     }, [])
+    
 
     const getTeacherName = (teacherId) => {
         const teacher = teachers.find(t => t.id === teacherId)
         return teacher ? teacher.full_name: 'Unknown Teacher'
     }
+    
 
     return (
             <>
@@ -43,34 +47,30 @@ const ListInvoices = () => {
                     <tr>
                         <td>Date</td>
                         <td>Teacher Name</td>
-                        <td>Services</td>
                         <td>Amount Due</td>
-                        <td>Paid</td>
+                        {/* <td>is paid?</td> */}
                     </tr>
                 </thead>
                 <tbody>
-                {invoices.map((invoice) => (
+                {invoices.length === 0 ? (
+                    <tr>
+                        <td colSpan="4">Loading Invoices...</td>
+                    </tr>
+                ) : (
+
+                invoices.map((invoice) => (
                     <tr key = {invoice.id}>
                         <td>{new Date(invoice.start_date).toLocaleDateString()}</td>
                         <td>{getTeacherName(invoice.teacher_id)}</td> 
-                        <td>
-                                    {invoice.service_items && invoice.service_items.length > 0 ? (
-                                        <ul>
-                                            {invoice.service_items.map((item, index) => (
-                                                <li key={index}>{item.service.title}</li> 
-                                            ))}
-                                        </ul>
-                                    ) : (
-                                        <span>No services</span>
-                                    )}
-                        </td>
                         <td>${invoice.amount_due.toFixed(2)}</td>
-                        <td>{invoice.paid ? "Yes" : "No"}</td>
+                        <td> <Link to={`/invoicedetail/${invoice.id}`}>See Invoice Details</Link></td>
                     </tr>
-                ))}
+                ))
+                )}
                 </tbody>
             </table>
         </>
-    )
-}
+    );
+};
+
 export default ListInvoices

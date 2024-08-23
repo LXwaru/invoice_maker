@@ -30,3 +30,10 @@ def list_invoices(
     db: Session = Depends(utils_db.get_db)
 ):
     return crud_invoices.list_invoices(db=db, skip=skip, limit=limit)
+
+@router.get('/api/invoice/{invoice_id}/', response_model=schemas.Invoice)
+def get_one_invoice(
+    invoice_id: int,
+    db: Session = Depends(utils_db.get_db)
+):
+    return crud_invoices.get_one_invoice(db=db, invoice_id=invoice_id)

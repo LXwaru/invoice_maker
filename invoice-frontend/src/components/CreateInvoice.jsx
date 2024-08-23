@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom' 
 import axios from 'axios'
 import  DatePicker  from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -8,15 +9,16 @@ const CreateInvoice = () => {
     const [ teachers, setTeachers ] = useState([])
     const [ teacherId, setTeacherId ] = useState(0)
     const [ startDate, setStartDate ] = useState(new Date())
+    const navigate = useNavigate()
 
 
     useEffect(() => {
         const fetchTeachers = async() => {
             try {
-                    const response = await axios.get('http://localhost:8000/api/teachers')
-                    setTeachers(response.data)
+                const response = await axios.get('http://localhost:8000/api/teachers')
+                setTeachers(response.data)
             } catch (error) {
-                    console.error("error fetching teachers;", error)
+                console.error("error fetching teachers;", error)
             }
         }
         fetchTeachers()
@@ -50,6 +52,7 @@ const CreateInvoice = () => {
         try {
             await axios.post('http://localhost:8000/api/invoices/', payload)
             alert('invoice created successfully')
+            navigate('/listinvoice')
         } catch (error) {
             console.error('invoice creation failure', error.response ? error.response.data : error.message)
         }

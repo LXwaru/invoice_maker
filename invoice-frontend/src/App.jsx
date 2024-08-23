@@ -3,6 +3,7 @@ import './App.css'
 import ClassEntry from './components/ClassEntry'
 import CreateInvoice from './components/CreateInvoice'
 import ListInvoices from './components/ListInvoice'
+import InvoiceDetail from './components/InvoiceDetail'
 import Nav from './components/Nav'
 
 function App() {
@@ -11,12 +12,13 @@ function App() {
     <>
       <BrowserRouter>
         <Nav />
-        <h2>General Invoicing Application</h2>
+        <h1>General Invoicing Application</h1>
         <div>
             <Routes>
               <Route path='/' element={<ClassEntry />} />
               <Route path='/createinvoice' element={< CreateInvoice />} />
               <Route path='/listinvoice' element={< ListInvoices />} />
+              <Route path='/invoicedetail/:id' element={<InvoiceDetail />} />
             </Routes>
         </div>
       </BrowserRouter>

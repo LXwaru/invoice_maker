@@ -88,3 +88,7 @@ def create_invoice(
 
 def list_invoices(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Invoice).offset(skip).limit(limit).all()
+
+
+def get_one_invoice(db: Session, invoice_id: int):
+    return db.query(models.Invoice).filter(models.Invoice.id == invoice_id).first()
