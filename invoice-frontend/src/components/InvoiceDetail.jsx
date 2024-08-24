@@ -56,6 +56,21 @@ const InvoiceDetail = () => {
         return service ? service.title : 'Unknown Service';
     };
 
+    const formatDateTime = (dateString) => {
+        const date = new Date(dateString)
+        const formattedDate = date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long', 
+            day: 'numeric',
+        })
+        const formattedTime = date.toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+        })
+        return `${formattedDate} - ${formattedTime}`
+    }
+
     return (
         <>
         <div className="container-sm" width="200px">
@@ -66,7 +81,7 @@ const InvoiceDetail = () => {
             <h5>Services:</h5>
             <ol>
                 {invoice.service_items.map((item) => (
-                    <li key={item.id}>{getServiceTitle(item.service_id)}</li>
+                    <li key={item.id}>{getServiceTitle(item.service_id)}: {formatDateTime(item.date_time)}</li>
                 ))}
             </ol>
         </div>
