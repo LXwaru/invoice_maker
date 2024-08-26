@@ -10,7 +10,7 @@ class Client(Base):
 
     id = Column(Integer, primary_key=True)
     full_name = Column(String, unique=True, index=True)
-    name = Column(String, unique=True, index=True)
+    email = Column(String, unique=True, index=True)
     is_active = Column(Boolean, default=True)
 
     service_items = relationship("ServiceItem", back_populates="client")

@@ -4,10 +4,6 @@ from sqlalchemy.exc import NoResultFound
 from . import models, schemas
 
 
-# def get_teacher(db: Session, teacher_id: int):
-#     return db.query(models.Teacher).filter(models.Teacher.id == teacher_id).first()
-
-
 def get_client_by_name(db: Session, full_name: str):
     return db.query(models.Client).filter(models.Client.full_name == full_name).first()
 
@@ -38,3 +34,6 @@ def delete_client(
     except NoResultFound:
         db.rollback()
         return {"detail": "User not found"}
+    
+
+
