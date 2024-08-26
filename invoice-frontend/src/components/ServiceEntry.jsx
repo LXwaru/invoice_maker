@@ -50,7 +50,7 @@ const ServiceEntry = () => {
 return(
     <>
         <form className="form-control" onSubmit={handleSubmit}>
-            <h3>Class Sign in</h3>
+            <h3>Service Sign in</h3>
             <table className="table">
                 <thead>
                     <tr>
