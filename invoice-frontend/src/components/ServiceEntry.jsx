@@ -32,6 +32,10 @@ const ServiceEntry = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        if (!clientId || !serviceId) {
+            alert("please select a client AND a service")
+            return
+        }
         try {
             await axios.post('http://localhost:8000/api/service_items/', 
                 {

@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, TIMESTAMP
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, TIMESTAMP, Numeric
 from sqlalchemy.orm import relationship
 from datetime import datetime, timezone
 
@@ -22,7 +22,7 @@ class Service(Base):
 
     id = Column(Integer, primary_key=True)
     title = Column(String, index=True)
-    price = Column(Integer, index=True)
+    price = Column(Numeric, index=True)
 
 
 class ServiceItem(Base):

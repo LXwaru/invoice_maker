@@ -53,7 +53,7 @@ const ListInvoices = () => {
                 <tbody>
                 {invoices.length === 0 ? (
                     <tr>
-                        <td colSpan="4">Loading Invoices...</td>
+                        <td colSpan="4">No Invoices To List</td>
                     </tr>
                 ) : (
 
