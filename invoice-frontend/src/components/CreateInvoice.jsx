@@ -6,22 +6,22 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 
 const CreateInvoice = () => {
-    const [ teachers, setTeachers ] = useState([])
-    const [ teacherId, setTeacherId ] = useState(0)
+    const [ clients, setClients ] = useState([])
+    const [ clientId, setClientId ] = useState(0)
     const [ startDate, setStartDate ] = useState(new Date())
     const navigate = useNavigate()
 
 
     useEffect(() => {
-        const fetchTeachers = async() => {
+        const fetchClients = async() => {
             try {
-                const response = await axios.get('http://localhost:8000/api/teachers')
-                setTeachers(response.data)
+                const response = await axios.get('http://localhost:8000/api/clients')
+                setClients(response.data)
             } catch (error) {
-                console.error("error fetching teachers;", error)
+                console.error("error fetching clients;", error)
             }
         }
-        fetchTeachers()
+        fetchClients()
     }, [])
 
     const handleSubmit = async (e) => {
@@ -34,8 +34,8 @@ const CreateInvoice = () => {
         start.setHours(0, 0, 0, 0)
         end.setHours(23, 59, 59, 999)
 
-        if (!teacherId) {
-            alert("no teacher selected")
+        if (!clientId) {
+            alert("no client selected")
             return
         }
 
@@ -43,7 +43,7 @@ const CreateInvoice = () => {
         const endDateUTC = end.toISOString()
 
         const payload = {
-            teacher_id: teacherId,
+            client_id: clientId,
             start_date: startDateUTC,
             end_date: endDateUTC
         }
@@ -64,16 +64,16 @@ const CreateInvoice = () => {
                 <table className='table'>
                     <thead>
                         <tr>
-                            <td>Select a teacher</td>
+                            <td>Select a client</td>
                             <td>Choose The Date</td>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>
-                            <select className="form-select" value={teacherId} onChange={(e) => setTeacherId(e.target.value)}>
-                                <option value={0}>select teacher</option>
-                                {teachers.map((t) => (
+                            <select className="form-select" value={clientId} onChange={(e) => setClientId(e.target.value)}>
+                                <option value={0}>select client</option>
+                                {clients.map((t) => (
                                     <option key={t.id} value={t.id}>
                                     {t.full_name}
                                 </option>

@@ -16,7 +16,7 @@ class ServiceOut(ServiceIn):
     
 
 class ServiceItemIn(BaseModel):
-    teacher_id: int
+    client_id: int
     service_id: int
 
 class ServiceItemOut(ServiceItemIn):
@@ -27,11 +27,11 @@ class ServiceItemOut(ServiceItemIn):
         orm_mode = True
 
 
-class TeacherBase(BaseModel):
+class ClientBase(BaseModel):
     full_name: str
 
 
-class Teacher(TeacherBase):
+class Client(ClientBase):
     id: int
     service_items: list[ServiceItemOut] = []
 
@@ -40,7 +40,7 @@ class Teacher(TeacherBase):
 
 
 class InvoiceCreate(BaseModel):
-    teacher_id: int
+    client_id: int
     start_date: datetime
     end_date: datetime
 

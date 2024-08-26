@@ -5,7 +5,7 @@ import axios from 'axios'
 const InvoiceDetail = () => {
     
     const [ invoice, setInvoice ] = useState({})
-    const [ teachers, setTeachers ] = useState([])
+    const [ clients, setClients ] = useState([])
     const [ services, setServices ] = useState([])
     const {id} = useParams()
     const [ loading, setLoading ] = useState(true)
@@ -17,9 +17,9 @@ const InvoiceDetail = () => {
                 const invoiceResponse = await axios.get(`http://localhost:8000/api/invoice/${id}/`)
                 const invoiceData = invoiceResponse.data
 
-                //fetching teacher data
-                const teacherResponse = await axios.get(`http://localhost:8000/api/teachers/`)
-                const teacherData = teacherResponse.data
+                //fetching client data
+                const clientResponse = await axios.get(`http://localhost:8000/api/clients/`)
+                const clientData = clientResponse.data
 
                 //fetching service data
                 const serviceResponse = await axios.get('http://localhost:8000/api/services/')
@@ -27,7 +27,7 @@ const InvoiceDetail = () => {
 
                 //setting state
                 setInvoice(invoiceData)
-                setTeachers(teacherData)
+                setClients(clientData)
                 setServices(serviceData)
                 setLoading(false)
             } catch (error) {
@@ -46,9 +46,9 @@ const InvoiceDetail = () => {
         return <div>Invoice not found.</div>
     }
 
-    const getTeacherName = (teacherId) => {
-        const teacher = teachers.find(t => t.id === teacherId)
-        return teacher ? teacher.full_name: 'Unknown Teacher'
+    const getClientName = (clientId) => {
+        const client = clients.find(t => t.id === clientId)
+        return client ? client.full_name: 'Unknown client'
     }
 
     const getServiceTitle = (serviceId) => {
@@ -75,7 +75,7 @@ const InvoiceDetail = () => {
         <>
         <div className="container-sm" width="200px">
             <h2>Invoice Details</h2>
-            <h4>Teacher Name: {getTeacherName(invoice.teacher_id)}</h4>
+            <h4>Client Name: {getClientName(invoice.client_id)}</h4>
             <h5>Amount Due: ${invoice.amount_due.toFixed(2)}</h5>
             <h5>Paid: {invoice.paid ? 'Yes' : 'No' } </h5>
             <h5>Services:</h5>

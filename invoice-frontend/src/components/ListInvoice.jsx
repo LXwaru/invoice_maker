@@ -4,7 +4,7 @@ import axios from 'axios'
 
 const ListInvoices = () => {
     const [ invoices, setInvoices ] = useState([])
-    const [ teachers, setTeachers ] = useState([])
+    const [ clients, setClients ] = useState([])
 
 
     useEffect(() => {
@@ -22,19 +22,19 @@ const ListInvoices = () => {
     }, [])
 
     useEffect(() => {
-        const fetchTeachers = async () => {
-            const response = await axios.get('http://localhost:8000/api/teachers/')
-            console.log("teachers:", response.data)
-            setTeachers(response.data)
+        const fetchClients = async () => {
+            const response = await axios.get('http://localhost:8000/api/clients/')
+            console.log("clients:", response.data)
+            setClients(response.data)
 
         }
-        fetchTeachers()
+        fetchClients()
     }, [])
     
 
-    const getTeacherName = (teacherId) => {
-        const teacher = teachers.find(t => t.id === teacherId)
-        return teacher ? teacher.full_name: 'Unknown Teacher'
+    const getClientName = (clientId) => {
+        const client = clients.find(t => t.id === clientId)
+        return client ? client.full_name: 'Unknown client'
     }
     
 
@@ -45,7 +45,7 @@ const ListInvoices = () => {
                 <thead>
                     <tr>
                         <td>Date</td>
-                        <td>Teacher Name</td>
+                        <td>client Name</td>
                         <td>Amount Due</td>
                         <td></td>
                     </tr>
@@ -60,7 +60,7 @@ const ListInvoices = () => {
                 invoices.map((invoice) => (
                     <tr key = {invoice.id}>
                         <td>{new Date(invoice.start_date).toLocaleDateString()}</td>
-                        <td>{getTeacherName(invoice.teacher_id)}</td> 
+                        <td>{getClientName(invoice.client_id)}</td> 
                         <td className="money" >${invoice.amount_due.toFixed(2)}</td>
                         <td> <Link to={`/invoicedetail/${invoice.id}`}>See Invoice Details</Link></td>
                     </tr>

@@ -2,20 +2,20 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 
 
-const ClassEntry = () => {
-    const [teacherId, setTeacherId] = useState(0)
-    const [teachers, setTeachers] = useState([])
+const ServiceEntry = () => {
+    const [clientId, setClientId] = useState(0)
+    const [clients, setClients] = useState([])
     const [serviceId, setServiceId] = useState(0)
     const [services, setServices] = useState([])
 
 
     useEffect(() => {
-        const fetchTeachers = async() => {
+        const fetchClients = async() => {
         try {
-                const response = await axios.get('http://localhost:8000/api/teachers')
-                setTeachers(response.data)
+                const response = await axios.get('http://localhost:8000/api/clients')
+                setClients(response.data)
             } catch (error) {
-                console.error("error fetching teachers;", error)
+                console.error("error fetching clients;", error)
             }
         }
         const fetchServices = async () => {
@@ -26,25 +26,23 @@ const ClassEntry = () => {
                 console.error("error fetching services:", error)
             }
         }
-        fetchTeachers()
+        fetchClients()
         fetchServices()
     }, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log('selected teacher', teacherId)
-        console.log('selected service', serviceId)
         try {
             await axios.post('http://localhost:8000/api/service_items/', 
                 {
-                teacher_id: teacherId,
+                client_id: clientId,
                 service_id: serviceId
                 }
             )
             alert('class sign in successful')
             window.location.reload()
         } catch (error) {
-            console.error('class sign in failed')
+            console.error('class sign in failed', error)
         }
     }
 
@@ -56,18 +54,18 @@ return(
             <table className="table">
                 <thead>
                     <tr>
-                        <td>Select Teacher</td>
+                        <td>Select client</td>
                         <td>Select Service</td>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>
-                            <select className="form-select" value={teacherId} onChange={(e) => setTeacherId(e.target.value)}>
-                                <option value={0}>select teacher</option>
-                                    {teachers.map((t) => (
-                                    <option key={t.id} value={t.id}>
-                                    {t.full_name}
+                            <select className="form-select" value={clientId} onChange={(e) => setClientId(e.target.value)}>
+                                <option value={0}>select client</option>
+                                    {clients.map((client) => (
+                                    <option key={client.id} value={client.id}>
+                                    {client.full_name}
                                 </option>
                                 ))}
                             </select>
@@ -90,4 +88,4 @@ return(
     </>
 )
 }
-export default ClassEntry
+export default ServiceEntry

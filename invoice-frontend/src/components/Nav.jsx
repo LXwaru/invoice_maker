@@ -14,7 +14,7 @@ const Nav = () => {
                     <NavLink className="nav-link" to="/listinvoice">LIST INVOICES</NavLink>
                 </li>
                 <li className="nav-item">
-                    <NavLink className="nav-link" to="/createteacher">REGISTER NEW TEACHER</NavLink>
+                    <NavLink className="nav-link" to="/createclient">REGISTER NEW CLIENT</NavLink>
                 </li>
                 <li className="nav-item">
                     <NavLink className="nav-link" to='/createservice'>REGISTER NEW SERVICE</NavLink>

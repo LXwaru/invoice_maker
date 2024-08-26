@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .database import SessionLocal
 
 from . import (
-    routers_teachers, 
+    routers_clients, 
     routers_services, 
     routers_service_item, 
     routers_invoices
@@ -11,7 +11,7 @@ from . import (
 
 
 app = FastAPI()
-app.include_router(routers_teachers.router, tags=["TEACHERS"])
+app.include_router(routers_clients.router, tags=["CLIENTS"])
 app.include_router(routers_services.router, tags=["SERVICES"])
 app.include_router(routers_service_item.router, tags=["SERVICE_ITEMS"])
 app.include_router(routers_invoices.router, tags=["INVOICES"])

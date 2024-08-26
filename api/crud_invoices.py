@@ -13,11 +13,11 @@ def create_invoice(
     
     try:
 
-        teacher_id = invoice.teacher_id
+        client_id = invoice.client_id
         start_date = invoice.start_date
         end_date = invoice.end_date
 
-        print(f"received invoice data: teacher_id={teacher_id}, start_date={start_date}, end_date={end_date}")
+        print(f"received invoice data: client_id={client_id}, start_date={start_date}, end_date={end_date}")
 
         if start_date.tzinfo is None:
             start_date = start_date.replace(tzinfo=timezone.utc)
@@ -27,7 +27,7 @@ def create_invoice(
         total_amount = (
             db.query(func.sum(models.Service.price))
             .join(models.ServiceItem, models.Service.id == models.ServiceItem.service_id)
-            .filter(models.ServiceItem.teacher_id == teacher_id)
+            .filter(models.ServiceItem.client_id == client_id)
             .filter(models.ServiceItem.date_time >= start_date)
             .filter(models.ServiceItem.date_time <= end_date)
             .scalar()
@@ -40,7 +40,7 @@ def create_invoice(
         new_invoice = models.Invoice(
             amount_due=total_amount,
             paid = False,
-            teacher_id = teacher_id,
+            client_id = client_id,
             start_date = start_date,
             end_date = end_date
         )
@@ -49,13 +49,13 @@ def create_invoice(
         db.refresh(new_invoice)
 
         service_items = db.query(models.ServiceItem).filter(
-            models.ServiceItem.teacher_id == teacher_id,
+            models.ServiceItem.client_id == client_id,
             models.ServiceItem.date_time >= start_date,
             models.ServiceItem.date_time <= end_date
         ).all()
 
         db.query(models.ServiceItem).filter(
-            models.ServiceItem.teacher_id == teacher_id,
+            models.ServiceItem.client_id == client_id,
             models.ServiceItem.date_time >= start_date,
             models.ServiceItem.date_time <= end_date
         ).update({'invoice_id': new_invoice.id})
@@ -65,7 +65,7 @@ def create_invoice(
         service_items_out = [
             schemas.ServiceItemOut(
                 id=item.id,
-                teacher_id=item.teacher_id,
+                client_id=item.client_id,
                 service_id=item.service_id,
                 date_time=item.date_time
             ) for item in service_items
@@ -73,7 +73,7 @@ def create_invoice(
 
         return schemas.Invoice(
             id=new_invoice.id,
-            teacher_id=new_invoice.teacher_id,
+            client_id=new_invoice.client_id,
             start_date=new_invoice.start_date,
             end_date=new_invoice.end_date,
             amount_due=new_invoice.amount_due,

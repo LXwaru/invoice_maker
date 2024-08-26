@@ -5,16 +5,16 @@ from datetime import datetime, timezone
 from .database import Base
 
 
-class Teacher(Base):
-    __tablename__ = "teachers"
+class Client(Base):
+    __tablename__ = "clients"
 
     id = Column(Integer, primary_key=True)
     full_name = Column(String, unique=True, index=True)
     name = Column(String, unique=True, index=True)
     is_active = Column(Boolean, default=True)
 
-    service_items = relationship("ServiceItem", back_populates="teacher")
-    invoices = relationship("Invoice", back_populates="teacher")
+    service_items = relationship("ServiceItem", back_populates="client")
+    invoices = relationship("Invoice", back_populates="client")
 
 
 class Service(Base):
@@ -30,11 +30,11 @@ class ServiceItem(Base):
 
     id = Column(Integer, primary_key=True)
     date_time = Column(TIMESTAMP(timezone=True), default=datetime.now)
-    teacher_id = Column(Integer, ForeignKey("teachers.id"))
+    client_id = Column(Integer, ForeignKey("clients.id"))
     service_id = Column(Integer, ForeignKey('services.id'))
     invoice_id = Column(Integer, ForeignKey('invoices.id'))
 
-    teacher = relationship("Teacher", back_populates="service_items")
+    client = relationship("Client", back_populates="service_items")
     service = relationship("Service")
     invoices = relationship("Invoice", back_populates="service_items")
 
@@ -46,10 +46,10 @@ class Invoice(Base):
     id = Column(Integer, primary_key=True)
     amount_due = Column(Integer, index=True)
     paid = Column(Boolean, default=False)
-    teacher_id = Column(Integer, ForeignKey("teachers.id"))
+    client_id = Column(Integer, ForeignKey("clients.id"))
     start_date = Column(DateTime, index=True)
     end_date = Column(DateTime, index=True)
 
-    teacher = relationship("Teacher", back_populates="invoices")
+    client = relationship("Client", back_populates="invoices")
     service_items = relationship("ServiceItem", back_populates="invoices")
 

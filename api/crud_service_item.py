@@ -9,7 +9,7 @@ def create_service_item(
         service_item: schemas.ServiceItemIn
 ):
     db_service_item = models.ServiceItem(
-        teacher_id=service_item.teacher_id, 
+        client_id=service_item.client_id, 
         service_id=service_item.service_id
     )
     db.add(db_service_item)
