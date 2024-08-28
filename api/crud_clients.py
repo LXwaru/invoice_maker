@@ -16,11 +16,24 @@ def get_clients(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_client(db: Session, client: schemas.ClientBase):
-    db_client = models.Client(full_name=client.full_name)
+    db_client = models.Client(full_name=client.full_name, email=client.email)
     db.add(db_client)
     db.commit()
     db.refresh(db_client)
     return db_client
+
+
+def disable_client(db: Session, client_id: int):
+    try: 
+        client = db.query(models.Client).filter(models.Client.id == client_id).one()
+        client.is_active = False
+        db.commit()
+        db.refresh(client)
+        return client
+    except NoResultFound:
+        db.rollback()
+        return None
+
 
 def delete_client(
         db: Session,

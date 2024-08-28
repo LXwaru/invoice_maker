@@ -29,10 +29,12 @@ class ServiceItemOut(ServiceItemIn):
 
 class ClientBase(BaseModel):
     full_name: str
+    email: str
 
 
 class Client(ClientBase):
     id: int
+    is_active: bool
     service_items: list[ServiceItemOut] = []
 
     class Config:

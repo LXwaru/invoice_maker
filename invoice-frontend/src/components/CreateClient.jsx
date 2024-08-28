@@ -3,18 +3,22 @@ import axios from 'axios'
 
 const CreateClient = () => {
     const [ name, setName ] = useState('')
+    const [ email, setEmail ] = useState('')
 
-    const handleSubmit = () => {
-        if (name === '') {
-            alert('enter a name')
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        if (name === '' || email === '') {
+            alert('enter a name AND and email')
             return
         }
 
         const payload = {
-            "full_name": name
+            "full_name": name, 
+            "email": email
         }
+
         try {
-            axios.post('http://localhost:8000/api/clients/', payload)
+            await axios.post('http://localhost:8000/api/clients/', payload)
             alert("client is now registered")
             window.location.reload()
         } catch (error) {
@@ -22,15 +26,13 @@ const CreateClient = () => {
         }
     }
     
-    const handleNameChange = (e) => {
-        setName(e.target.value)
-    }
 
     return (
         <>
-            <form className="form-control-lg" onSubmit={handleSubmit}>
+            <form className="form-control" onSubmit={handleSubmit}>
                 <h3>Register a New Client</h3>
-                <input onChange={handleNameChange} id="clientCreate" placeholder="enter client's name"></input>
+                <input onChange={(e) => setName(e.target.value)} id="clientNameCreate" placeholder="enter name" />
+                <input onChange={(e) => setEmail(e.target.value)} id="clientEmailCreate" placeholder="enter email address" />
                 <button>submit</button>
             </form>
         

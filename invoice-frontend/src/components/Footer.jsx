@@ -5,7 +5,7 @@ const Footer = () => {
         <div className='nav'>
             <ul className="nav fixed-bottom justify-content-center">
                 <li className="nav-item">
-                    <NavLink className="nav-link" to="/deleteclient">DELETE CLIENT ACCOUNT</NavLink>
+                    <NavLink className="nav-link" to="/disableclient">DISABLE CLIENT ACCOUNT</NavLink>
                 </li>
                 <li className="nav-item">
                     <NavLink className="nav-link" to="/createinvoice">UPDATE / DELETE SERVICE</NavLink>      

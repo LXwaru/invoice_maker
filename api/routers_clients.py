@@ -40,6 +40,16 @@ def list_clients(
     clients = crud_clients.get_clients(db, skip=skip, limit=limit)
     return clients
 
+@router.put("/api/client/{client_id}/")
+def disable_client(
+    client_id: int,
+    db: Session = Depends(utils_db.get_db)
+):
+    result = crud_clients.disable_client(db, client_id=client_id)
+    if not result:
+        raise HTTPException(status_code=404, detail='client not found')
+    return {"detail": "client disabled successfully"}
+
 @router.delete("/api/client/{client_id}/")
 def delete_client(
     client_id: int,

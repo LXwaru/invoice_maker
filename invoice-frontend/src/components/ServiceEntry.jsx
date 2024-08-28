@@ -13,7 +13,9 @@ const ServiceEntry = () => {
         const fetchClients = async() => {
         try {
                 const response = await axios.get('http://localhost:8000/api/clients')
-                setClients(response.data)
+                const responseData = response.data
+                const activeClients = responseData.filter(clients => clients.is_active === true)
+                setClients(activeClients)
             } catch (error) {
                 console.error("error fetching clients;", error)
             }

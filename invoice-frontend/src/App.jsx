@@ -6,7 +6,7 @@ import ListInvoices from './components/ListInvoice'
 import InvoiceDetail from './components/InvoiceDetail'
 import CreateClient from './components/CreateClient'
 import CreateService from './components/CreateService'
-import DeleteClient from './components/DeleteClient'
+import DisableClient from './components/DisableClient'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
 
@@ -24,7 +24,7 @@ function App() {
               <Route path='/invoicedetail/:id' element={<InvoiceDetail />} />
               <Route path='/createclient' element={<CreateClient />} />
               <Route path='/createservice' element={<CreateService />} />
-              <Route path='/deleteclient' element={<DeleteClient />} />
+              <Route path='/disableclient' element={<DisableClient />} />
             </Routes>
         </div>
         <Footer />
