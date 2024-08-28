@@ -8,7 +8,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 const CreateInvoice = () => {
     const [ clients, setClients ] = useState([])
     const [ clientId, setClientId ] = useState(0)
-    const [ startDate, setStartDate ] = useState(new Date())
+    const [ startDate, setStartDate ] = useState(null)
+    const today = new Date()
     const navigate = useNavigate()
 
 
@@ -81,7 +82,13 @@ const CreateInvoice = () => {
                                 </select>
                             </td>
                             <td>
-                                <DatePicker className="form-select"selected={startDate} onChange={(date) => setStartDate(date)} />
+                                <DatePicker
+                                className="form-select"
+                                selected={startDate} 
+                                onChange={(date) => setStartDate(date)}
+                                maxDate={today}
+                                excludeDates={[today]}
+                                placeholderText="Select a Date" />
                             </td>
                         </tr>
                     </tbody>

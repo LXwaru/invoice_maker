@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import func
+from sqlalchemy.exc import NoResultFound
 from fastapi import HTTPException
 from datetime import datetime, timezone
 
@@ -92,3 +93,17 @@ def list_invoices(db: Session, skip: int = 0, limit: int = 100):
 
 def get_one_invoice(db: Session, invoice_id: int):
     return db.query(models.Invoice).filter(models.Invoice.id == invoice_id).first()
+
+
+def delete_invoice(
+        db: Session,
+        invoice_id: int
+):
+    try: 
+        invoice = db.query(models.Invoice).filter(models.Invoice.id == invoice_id).one()
+        db.delete(invoice)
+        db.commit()
+        return{"detail": "invoice deleted"}
+    except NoResultFound:
+        db.rollback()
+        return {"detail": "invoice not found"}

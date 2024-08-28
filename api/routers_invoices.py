@@ -37,3 +37,10 @@ def get_one_invoice(
     db: Session = Depends(utils_db.get_db)
 ):
     return crud_invoices.get_one_invoice(db=db, invoice_id=invoice_id)
+
+@router.delete("/api/invoice/{invoice_id}/")
+def delete_invoice(
+    invoice_id: int,
+    db: Session = Depends(utils_db.get_db)
+):
+    return crud_invoices.delete_invoice(db, invoice_id)

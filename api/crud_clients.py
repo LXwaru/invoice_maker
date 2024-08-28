@@ -46,7 +46,8 @@ def delete_client(
         return{"detail": "User successfully deleted"}
     except NoResultFound:
         db.rollback()
-        return {"detail": "User not found"}
+        return {"detail": "client not found"}
     
+
 
 
