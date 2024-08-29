@@ -7,6 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const CreateInvoice = () => {
     const [ clients, setClients ] = useState([])
+    const [ invoices, setInvoices ] = useState([])
     const [ clientId, setClientId ] = useState(0)
     const [ startDate, setStartDate ] = useState(null)
     const today = new Date()
@@ -14,18 +15,25 @@ const CreateInvoice = () => {
 
 
     useEffect(() => {
-        const fetchClients = async() => {
+        const fetchData = async() => {
             try {
-                const response = await axios.get('http://localhost:8000/api/clients')
-                setClients(response.data)
+                const clientResponse = await axios.get('http://localhost:8000/api/clients')
+                const clientData = clientResponse.data
+                const invoiceResponse = await axios.get('http://localhost:8000/api/invoices')
+                const invoiceData = invoiceResponse.data
+                console.log(clientData, "client data")
+                console.log(invoiceData, "invoice data")
+                setClients(clientData)
+                setInvoices(invoiceData)
             } catch (error) {
-                console.error("error fetching clients;", error)
+                console.error("error fetching data;", error)
             }
         }
-        fetchClients()
+        fetchData()
     }, [])
+    console.log(invoices, "invoices")
 
-    const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
         e.preventDefault()
 
         const start = new Date(startDate)
@@ -43,20 +51,41 @@ const CreateInvoice = () => {
         const startDateUTC = start.toISOString()
         const endDateUTC = end.toISOString()
 
-        const payload = {
-            client_id: clientId,
-            start_date: startDateUTC,
-            end_date: endDateUTC
-        }
-        console.log(payload, "payload")
+        if (clientId in invoices.map(invoice => invoice.client_id) && startDateUTC in invoices.map(invoice => invoice.start(date_time))) {
+            const invoiceIdToUpdate = invoice.id 
+            
+            // fetch invoice data for specific object that matches the conditional
+            const payload = {
+                "client_id": clientId,
+                "service_id": invoices.service_id,
+                "id": invoices.service_items.id,
+                "date_time": startDateUTC
 
-        try {
-            await axios.post('http://localhost:8000/api/invoices/', payload)
-            alert('invoice created successfully')
-            navigate('/listinvoice')
-        } catch (error) {
-            console.error('invoice creation failure', error.response ? error.response.data : error.message)
+            }
+            // make a payload object for the PUT function
+            // make the api PUT call
+
+        } else {
+            const payload = {
+                client_id: clientId,
+                start_date: startDateUTC,
+                end_date: endDateUTC
+            }
+            console.log(payload, "payload")
+    
+            try {
+                await axios.post('http://localhost:8000/api/invoices/', payload)
+                alert('invoice created successfully')
+                navigate('/listinvoice')
+            } catch (error) {
+                console.error('invoice creation failure', error.response ? error.response.data : error.message)
+            }
         }
+
+
+        
+            
+        
     }
     return (
         <>
@@ -87,7 +116,7 @@ const CreateInvoice = () => {
                                 selected={startDate} 
                                 onChange={(date) => setStartDate(date)}
                                 maxDate={today}
-                                excludeDates={[today]}
+                                // excludeDates={[today]}
                                 placeholderText="Select a Date" />
                             </td>
                         </tr>

@@ -95,6 +95,31 @@ def get_one_invoice(db: Session, invoice_id: int):
     return db.query(models.Invoice).filter(models.Invoice.id == invoice_id).first()
 
 
+def add_service_item_to_invoice(
+        db: Session,
+        invoice_id: int,
+        service_item: schemas.ServiceItemIn
+):
+    invoice = db.query(models.Invoice).filter(models.Invoice.id == invoice_id).one()
+    if not invoice:
+        raise HTTPException(status_code=404, detail="invoice not found")
+    
+    new_service_item = models.ServiceItem(**service_item.model_dump(), invoice_id=invoice.id)
+    db.add(new_service_item)
+    db.commit()
+    db.refresh(new_service_item)
+
+    updated_service_prices = 0
+    for service_item in invoice.service_items:
+        service = db.query(models.Service).filter(models.Service.id == service_item.service_id).one()
+        updated_service_prices += service.price
+    invoice.amount_due = updated_service_prices
+    db.commit()
+    db.refresh(invoice)
+    return invoice
+
+
+
 def delete_invoice(
         db: Session,
         invoice_id: int

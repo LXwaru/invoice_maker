@@ -38,6 +38,23 @@ def get_one_invoice(
 ):
     return crud_invoices.get_one_invoice(db=db, invoice_id=invoice_id)
 
+
+@router.put("/api/invoice/{invoice_id}/", response_model=schemas.Invoice)
+def add_service_item_to_invoice(
+    invoice_id: int,
+    service_item: schemas.ServiceItemIn,
+    db: Session = Depends(utils_db.get_db)
+):
+    invoice = crud_invoices.get_one_invoice(db=db, invoice_id=invoice_id)
+    if not invoice:    
+        raise HTTPException(status_code=404, detail="invoice not found")
+    return crud_invoices.add_service_item_to_invoice(
+        db=db, 
+        invoice_id=invoice_id, 
+        service_item=service_item
+    )
+
+
 @router.delete("/api/invoice/{invoice_id}/")
 def delete_invoice(
     invoice_id: int,

@@ -27,7 +27,7 @@ function App() {
               <Route path='/disableclient' element={<DisableClient />} />
             </Routes>
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </BrowserRouter>
     </>
   )
