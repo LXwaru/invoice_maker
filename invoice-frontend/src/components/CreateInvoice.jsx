@@ -6,90 +6,100 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 
 const CreateInvoice = () => {
+    const [ loading, setLoading ] = useState(true)
     const [ clients, setClients ] = useState([])
+    const [ serviceItems, setServiceItems ] = useState([])
+    const [ nameFilter, setNameFilter ] = useState([])
+    const [ dateFilter, setDateFilter ] = useState([])
+    const [ startDate, setStartDate ] = useState('')
+    const [ endDate, setEndDate ] = useState('')
+    const [ services, setServices ] = useState([])
     const [ invoices, setInvoices ] = useState([])
     const [ clientId, setClientId ] = useState(0)
-    const [ startDate, setStartDate ] = useState(null)
+    const [ targetDateRange, setTargetDateRange ] = useState(null)
     const today = new Date()
     const navigate = useNavigate()
 
 
     useEffect(() => {
         const fetchData = async() => {
+            setLoading(true)
             try {
                 const clientResponse = await axios.get('http://localhost:8000/api/clients')
                 const clientData = clientResponse.data
-                const invoiceResponse = await axios.get('http://localhost:8000/api/invoices')
-                const invoiceData = invoiceResponse.data
-                console.log(clientData, "client data")
-                console.log(invoiceData, "invoice data")
+                
+                const serviceItemResponse = await axios.get('http://localhost:8000/api/service_items')
+                const serviceItemData = serviceItemResponse.data
+
+                const serviceResponse = await axios.get('http://localhost:8000/api/services')
+                const serviceData = serviceResponse.data
+
                 setClients(clientData)
-                setInvoices(invoiceData)
+                setServiceItems(serviceItemData)
+                setServices(serviceData)
+
             } catch (error) {
                 console.error("error fetching data;", error)
+            } finally {
+                setLoading(false)
             }
-        }
+        } 
         fetchData()
     }, [])
-    console.log(invoices, "invoices")
 
-const handleSubmit = async (e) => {
-        e.preventDefault()
-
-        const start = new Date(startDate)
-        const end = new Date(startDate)
-
-
-        start.setHours(0, 0, 0, 0)
-        end.setHours(23, 59, 59, 999)
-
-        if (!clientId) {
-            alert("no client selected")
-            return
-        }
-
-        const startDateUTC = start.toISOString()
-        const endDateUTC = end.toISOString()
-
-        if (clientId in invoices.map(invoice => invoice.client_id) && startDateUTC in invoices.map(invoice => invoice.start(date_time))) {
-            const invoiceIdToUpdate = invoice.id 
-            
-            // fetch invoice data for specific object that matches the conditional
-            const payload = {
-                "client_id": clientId,
-                "service_id": invoices.service_id,
-                "id": invoices.service_items.id,
-                "date_time": startDateUTC
-
-            }
-            // make a payload object for the PUT function
-            // make the api PUT call
-
-        } else {
-            const payload = {
-                client_id: clientId,
-                start_date: startDateUTC,
-                end_date: endDateUTC
-            }
-            console.log(payload, "payload")
+    useEffect(() => {
+        const filterServiceItems = () => {
+            const clientFilter = serviceItems.filter(item => item.client_id === Number(clientId))
     
-            try {
-                await axios.post('http://localhost:8000/api/invoices/', payload)
-                alert('invoice created successfully')
-                navigate('/listinvoice')
-            } catch (error) {
-                console.error('invoice creation failure', error.response ? error.response.data : error.message)
+            if (startDate && endDate) {
+                const dateRangeFilter = clientFilter.filter(item => item.date_time >= startDate && item.date_time <= endDate)
+                setDateFilter(dateRangeFilter)
+            } else {
+                setDateFilter(clientFilter)
             }
         }
-
-
-        
-            
-        
+        filterServiceItems()
+    }, [clientId, serviceItems, startDate, endDate])
+    
+    const handleNameFilterChange = (e) => {
+        e.preventDefault()
+        setClientId(e.target.value)
     }
+
+    const handleDateFilter = (selectedDate) => {
+        setTargetDateRange(selectedDate)
+
+        if (selectedDate) {
+
+            const start = new Date(selectedDate)
+            const end = new Date(selectedDate)
+            start.setHours(0, 0, 0, 0)
+            end.setHours(23, 59, 59, 999)
+            const startDateUTC = new Date(start.getTime() - (start.getTimezoneOffset() * 60000)).toISOString().split('T')[0] + "T00:00:00.000Z";
+            const endDateUTC = new Date(end.getTime() - (end.getTimezoneOffset() * 60000)).toISOString().split('T')[0] + "T23:59:59.999Z";
+            setStartDate(startDateUTC)
+            setEndDate(endDateUTC)
+        } else {
+            console.error("selected data is undefined or null")
+        }
+    }
+
+    const getServiceTitle = (serviceId) => {
+        const service = services.find(s => s.id === serviceId);
+        return service ? service.title : 'Unknown Service';
+    };
+
+    const getServicePrice = (serviceId) => {
+        const service = services.find(s => s.id === serviceId)
+        return service ? service.price : 'Unknown Price'
+    }
+
     return (
         <>
-            <form className="form-control" onSubmit={handleSubmit}>
+            {loading ? (
+                <div>Loading...</div>
+            ) : (
+                <>
                 <h3>Create Invoice</h3>
                 <table className='table'>
                     <thead>
@@ -101,7 +111,7 @@ const handleSubmit = async (e) => {
                     <tbody>
                         <tr>
                             <td>
-                            <select className="form-select" value={clientId} onChange={(e) => setClientId(e.target.value)}>
+                            <select className="form-select" value={clientId} onChange={handleNameFilterChange}>
                                 <option value={0}>select client</option>
                                 {clients.map((t) => (
                                     <option key={t.id} value={t.id}>
@@ -113,8 +123,8 @@ const handleSubmit = async (e) => {
                             <td>
                                 <DatePicker
                                 className="form-select"
-                                selected={startDate} 
-                                onChange={(date) => setStartDate(date)}
+                                selected={targetDateRange} 
+                                onChange={handleDateFilter}
                                 maxDate={today}
                                 // excludeDates={[today]}
                                 placeholderText="Select a Date" />
@@ -122,9 +132,31 @@ const handleSubmit = async (e) => {
                         </tr>
                     </tbody>
                 </table>
-                <button type='submit'>submit</button>
-            </form>
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <td>Services</td>
+                            <td>Total Due</td>
+                            <td>Payment Status</td>
+                            <td>Sale ID</td>
+                        </tr>
+                    </thead>
+                    <tbody>
 
+                            {dateFilter.map((item) => (
+                        <tr key = {item.id}>
+                                <td>{getServiceTitle(item.service_id)}</td>
+                                <td>{getServicePrice(item.service_id)}</td>
+                                <td>total price</td>
+                                <td>{item.id}</td>
+
+                        </tr>
+                            ))}
+                    </tbody>
+                </table>
+
+            </>
+            )}
         </>
     )
 
