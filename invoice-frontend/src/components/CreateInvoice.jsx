@@ -20,6 +20,21 @@ const CreateInvoice = () => {
     const today = new Date()
     const navigate = useNavigate()
 
+    const isToday = (date) => {
+        if (!date) return false
+        const selectedDate = new Date(date)
+        return (
+            selectedDate.getFullYear() === today.getFullYear() &&
+            selectedDate.getMonth() === today.getMonth() &&
+            selectedDate.getDate() === today.getDate()
+        )
+    }
+
+    const isButtonDisabled = clientId === 0 || 
+    isToday(targetDateRange) || 
+    targetDateRange === null ||
+    dateFilter.length === 0
+    console.log(dateFilter)
 
     useEffect(() => {
         const fetchData = async() => {
@@ -55,7 +70,8 @@ const CreateInvoice = () => {
                 const dateRangeFilter = clientFilter.filter(item => item.date_time >= startDate && item.date_time <= endDate)
                 setDateFilter(dateRangeFilter)
             } else {
-                setDateFilter(clientFilter)
+                // setDateFilter(clientFilter)
+
             }
         }
         filterServiceItems()
@@ -63,7 +79,7 @@ const CreateInvoice = () => {
     
     const handleNameFilterChange = (e) => {
         e.preventDefault()
-        setClientId(e.target.value)
+        setClientId(Number(e.target.value))
     }
 
     const handleDateFilter = (selectedDate) => {
@@ -94,18 +110,36 @@ const CreateInvoice = () => {
         return service ? service.price : 'Unknown Price'
     }
 
+    const handleSubmit = () => {
+        const payload = {
+            "client_id": clientId,
+            "start_date": startDate,
+            "end_date": endDate
+        }
+        try {
+            axios.post('http://localhost:8000/api/invoices/', payload)
+            alert('invoice register successful')
+            navigate('/listinvoice')
+
+        } catch (error) {
+            console.error("could register invoice", error)
+        }
+    }
+
     return (
         <>
             {loading ? (
                 <div>Loading...</div>
             ) : (
                 <>
+                <form className='form-control' onSubmit={handleSubmit}>
                 <h3>Create Invoice</h3>
                 <table className='table'>
                     <thead>
                         <tr>
                             <td>Select a client</td>
                             <td>Choose The Date</td>
+                            <td></td>
                         </tr>
                     </thead>
                     <tbody>
@@ -129,31 +163,37 @@ const CreateInvoice = () => {
                                 // excludeDates={[today]}
                                 placeholderText="Select a Date" />
                             </td>
+                            <td>
+                                <button
+                                        className="btn btn-success"
+                                        disabled={isButtonDisabled}
+                                        >register invoice
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
                 <table className="table">
                     <thead>
                         <tr>
-                            <td>Services</td>
-                            <td>Total Due</td>
-                            <td>Payment Status</td>
                             <td>Sale ID</td>
+                            <td>Services</td>
+                            <td>Price</td>
                         </tr>
                     </thead>
                     <tbody>
 
                             {dateFilter.map((item) => (
                         <tr key = {item.id}>
+                                <td>{item.id}</td>
                                 <td>{getServiceTitle(item.service_id)}</td>
                                 <td>{getServicePrice(item.service_id)}</td>
-                                <td>total price</td>
-                                <td>{item.id}</td>
 
                         </tr>
                             ))}
                     </tbody>
                 </table>
+                </form>
 
             </>
             )}
