@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import NoResultFound
+from datetime import datetime, timezone
 
 from . import models, schemas
 
@@ -10,7 +11,7 @@ def create_service_item(
 ):
     db_service_item = models.ServiceItem(
         client_id=service_item.client_id, 
-        service_id=service_item.service_id
+        service_id=service_item.service_id,
     )
     db.add(db_service_item)
     db.commit()

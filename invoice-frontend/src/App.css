@@ -56,6 +56,8 @@ li {
 
 .nav {
   padding: 25px;
+  
+
 }
 
 .general-grid {
@@ -65,4 +67,14 @@ li {
 
 .max-width {
   grid-column: 1
+}
+
+.react-datePicker-popper {
+  z-index: 9999;
+  /* position: absolute; */
+  /* width: 100%; */
+}
+
+body {
+  padding-top: 56px; 
 }
