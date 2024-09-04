@@ -31,8 +31,8 @@ const CreateClient = () => {
         <>
             <form className="form-control" onSubmit={handleSubmit}>
                 <h3>Register a New Client</h3>
-                <input onChange={(e) => setName(e.target.value)} id="clientNameCreate" placeholder="enter name" />
-                <input onChange={(e) => setEmail(e.target.value)} id="clientEmailCreate" placeholder="enter email address" />
+                <input className='form-control' onChange={(e) => setName(e.target.value)} id="clientNameCreate" placeholder="enter name" />
+                <input className='form-control' onChange={(e) => setEmail(e.target.value)} id="clientEmailCreate" placeholder="enter email address" />
                 <button>submit</button>
             </form>
         

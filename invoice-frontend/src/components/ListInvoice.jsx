@@ -37,39 +37,36 @@ const ListInvoices = () => {
         return client ? client.full_name: 'Unknown client'
     }
     
+    const displayDate = (dateString) => {
+        const date = new Date(dateString)
+        return date.toLocaleDateString()
+    }
 
     return (
-            <>
+        <>
+            <div className='container-fluid'>
             <h3>Invoice List</h3>
-            <table className="table">
-                <thead>
-                    <tr>
-                        <td>Date</td>
-                        <td>client Name</td>
-                        <td>Amount Due</td>
-                        <td></td>
-                    </tr>
-                </thead>
-                <tbody>
-                {invoices.length === 0 ? (
-                    <tr>
-                        <td colSpan="4">No Invoices To List</td>
-                    </tr>
-                ) : (
+                    {invoices.length === 0 ? (
 
-                invoices.map((invoice) => (
-                    <tr key = {invoice.id}>
-                        <td>{new Date(invoice.start_date).toLocaleDateString()}</td>
-                        <td>{getClientName(invoice.client_id)}</td> 
-                        <td className="money" >${invoice.amount_due.toFixed(2)}</td>
-                        <td> <Link to={`/invoicedetail/${invoice.id}`}>See Invoice Details</Link></td>
-                    </tr>
-                ))
-                )}
-                </tbody>
-            </table>
-        </>
-    );
+                            <p colSpan="4">No Invoices To List</p>
+
+                    ) : (
+
+                    invoices.map((invoice) => (
+                        <div className='container-fluid' key={invoice.id}>
+                            <hr />
+                            <ul className='list-group'>
+                                <li className='list-group-item'><strong>{displayDate(invoice.end_date)}</strong> <em>- invoice id: {invoice.id}</em></li>
+                                <li className='list-group-item'><strong>{getClientName(invoice.client_id)}</strong><em> - ${invoice.amount_due.toFixed(2)}</em> - <Link to={`/invoicedetail/${invoice.id}`}>See Invoice Details</Link></li>
+                            </ul>
+                        </div>
+                    ))
+                    )}
+
+            </div>
+    </>
+);
 };
+
 
 export default ListInvoices

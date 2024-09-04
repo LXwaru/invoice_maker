@@ -47,6 +47,7 @@ const CreateService = () => {
                         <tr>
                             <td>
                                 <input 
+                                    className='form-control'
                                     onChange={handleTitleChange} 
                                     id="titleCreate" 
                                     placeholder="enter service title"> 
@@ -54,6 +55,7 @@ const CreateService = () => {
                             </td>
                             <td>
                                 <input 
+                                    className='form-control'
                                     onChange={handlePriceChange} 
                                     id="priceCreate" 
                                     placeholder="enter price">
