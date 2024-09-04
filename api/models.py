@@ -13,7 +13,7 @@ class Client(Base):
     email = Column(String, unique=True, index=True)
 
     service_items = relationship("ServiceItem", back_populates="client")
-    invoices = relationship("Invoices", back_populates="client")
+    invoices = relationship("Invoice", back_populates="client")
 
 
 
@@ -50,7 +50,7 @@ class ServiceItem(Base):
     client = relationship("Client", back_populates="service_items")
     employee = relationship("Employee", back_populates="service_items")
     service = relationship("Service")
-    invoices = relationship("Invoice", back_populates="service_items")
+    invoice = relationship("Invoice", back_populates="service_items")
 
 
 
@@ -67,5 +67,5 @@ class Invoice(Base):
 
     client = relationship("Client", back_populates="invoices")
     employee = relationship("Employee", back_populates="invoices")
-    service_items = relationship("ServiceItem", back_populates="invoices")
+    service_items = relationship("ServiceItem", back_populates="invoice")
 

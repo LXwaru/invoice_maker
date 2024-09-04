@@ -5,46 +5,56 @@ import axios from 'axios'
 const ServiceEntry = () => {
     const [clientId, setClientId] = useState(0)
     const [clients, setClients] = useState([])
-    const [serviceId, setServiceId] = useState(0)
+    const [employees, setEmployees ] = useState([])
+    const [employeeId, setEmployeeId ] = useState(0)
     const [services, setServices] = useState([])
+    const [serviceId, setServiceId] = useState(0)
 
 
     useEffect(() => {
-        const fetchClients = async() => {
+        const fetchData = async() => {
         try {
-                const response = await axios.get('http://localhost:8000/api/clients')
-                const responseData = response.data
-                const activeClients = responseData.filter(clients => clients.is_active === true)
-                setClients(activeClients)
+                //fetching employees
+                const employeeResponse = await axios.get('http://localhost:8000/api/employees/')
+                const employeeData = employeeResponse.data
+                const activeEmployees = employeeData.filter(employee => employee.is_active === true)
+                console.log(activeEmployees, 'active employees')
+                
+                //fetching clients
+                const clientResponse = await axios.get('http://localhost:8000/api/clients/')
+                const clientData = clientResponse.data
+
+                //fetching services
+                const serviceResponse = await axios.get('http://localhost:8000/api/services/')
+                const serviceData = serviceResponse.data
+            
+                setEmployees(activeEmployees)
+                setClients(clientData)
+                setServices(serviceData)
+                console.log(employees, 'employees')
+                console.log(clients, 'clients')
+                console.log(services, 'services')
             } catch (error) {
-                console.error("error fetching clients;", error)
+                console.error("error fetching data;", error)
             }
         }
-        const fetchServices = async () => {
-            try {
-                const response = await axios.get('http://localhost:8000/api/services')
-                setServices(response.data)
-            } catch (error) {
-                console.error("error fetching services:", error)
-            }
-        }
-        fetchClients()
-        fetchServices()
-    }, [])
+        fetchData()
+    }, [clientId, employeeId, serviceId])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if (!clientId || !serviceId) {
-            alert("please select a client AND a service")
+        if (!clientId || !serviceId || !employeeId) {
+            alert("please select a client, an employee, AND a service")
             return
         }
         try {
-            await axios.post('http://localhost:8000/api/service_items/', 
-                {
-                client_id: clientId,
-                service_id: serviceId
-                }
-            )
+
+            const payload = {
+                "employee_id": employeeId,
+                "client_id": clientId,
+                "service_id": serviceId
+            }
+            await axios.post('http://localhost:8000/api/service_items/', payload)
             alert('class sign in successful')
             window.location.reload()
         } catch (error) {
@@ -60,7 +70,8 @@ return(
             <table className="table">
                 <thead>
                     <tr>
-                        <td>Select client</td>
+                        <td>Select Client</td>
+                        <td>Select Employee</td>
                         <td>Select Service</td>
                     </tr>
                 </thead>
@@ -72,6 +83,16 @@ return(
                                     {clients.map((client) => (
                                     <option key={client.id} value={client.id}>
                                     {client.full_name}
+                                </option>
+                                ))}
+                            </select>
+                        </td>
+                        <td>
+                            <select className="form-select" value={employeeId} onChange={(e) => setEmployeeId(e.target.value)}>
+                                <option value={0}>select employee</option>
+                                    {employees.map((employee) => (
+                                    <option key={employee.id} value={employee.id}>
+                                    {employee.full_name}
                                 </option>
                                 ))}
                             </select>

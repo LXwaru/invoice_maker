@@ -2,7 +2,7 @@ import { useState } from 'react'
 import axios from 'axios'
 
 
-const CreateClient = () => {
+const CreateEmployee = () => {
     const [ name, setName ] = useState('')
     const [ email, setEmail ] = useState('')
 
@@ -19,25 +19,23 @@ const CreateClient = () => {
         }
 
         try {
-            await axios.post('http://localhost:8000/api/clients/', payload)
-            alert("client is now registered")
+            await axios.post('http://localhost:8000/api/employees/', payload)
+            alert("employee is now registered and activated")
             window.location.reload()
         } catch (error) {
-            console.error("could not register client", error)
+            console.error("could not register employee", error)
         }
     }
-    
 
     return (
         <>
             <form className="form-control" onSubmit={handleSubmit}>
-                <h3>Register a New Client</h3>
+                <h3>Register a New Employee</h3>
                 <input className='form-control' onChange={(e) => setName(e.target.value)} id="clientNameCreate" placeholder="enter name" />
                 <input className='form-control' onChange={(e) => setEmail(e.target.value)} id="clientEmailCreate" placeholder="enter email address" />
                 <button>submit</button>
             </form>
-        
         </>
     )
 }
-export default CreateClient
+export default CreateEmployee

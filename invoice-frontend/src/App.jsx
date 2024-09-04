@@ -7,6 +7,7 @@ import InvoiceDetail from './components/InvoiceDetail'
 import CreateClient from './components/CreateClient'
 import CreateService from './components/CreateService'
 import DisableClient from './components/DisableClient'
+import CreateEmployee from './components/CreateEmployee'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
 
@@ -25,6 +26,7 @@ function App() {
               <Route path='/createclient' element={<CreateClient />} />
               <Route path='/createservice' element={<CreateService />} />
               <Route path='/disableclient' element={<DisableClient />} />
+              <Route path='/createemployee' element={<CreateEmployee />} />
             </Routes>
         </div>
         {/* <Footer /> */}
