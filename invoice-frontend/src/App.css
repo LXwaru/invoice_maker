@@ -70,8 +70,8 @@ li {
 }
 
 .react-datePicker-popper {
-  z-index: 9999;
-  /* position: absolute; */
+  z-index: 1;
+  position: absolute;
   /* width: 100%; */
 }
 

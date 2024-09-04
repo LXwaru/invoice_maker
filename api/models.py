@@ -26,7 +26,6 @@ class Employee(Base):
     is_active = Column(Boolean, default=True)
 
     service_items = relationship("ServiceItem", back_populates="employee")
-    invoices = relationship("Invoice", back_populates="employee")
 
 
 class Service(Base):
@@ -60,12 +59,10 @@ class Invoice(Base):
     id = Column(Integer, primary_key=True)
     amount_due = Column(Integer, index=True)
     paid = Column(Boolean, default=False)
-    employee_id = Column(Integer, ForeignKey("employees.id"))
     client_id = Column(Integer, ForeignKey("clients.id"))
     start_date = Column(DateTime, index=True)
     end_date = Column(DateTime, index=True)
 
     client = relationship("Client", back_populates="invoices")
-    employee = relationship("Employee", back_populates="invoices")
     service_items = relationship("ServiceItem", back_populates="invoice")
 

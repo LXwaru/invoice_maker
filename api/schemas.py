@@ -55,7 +55,6 @@ class Employee(EmployeeBase):
 
 
 class InvoiceCreate(BaseModel):
-    employee_id: int
     client_id: int
     start_date: datetime
     end_date: datetime

@@ -8,15 +8,16 @@ import 'react-datepicker/dist/react-datepicker.css';
 const CreateInvoice = () => {
     const [ loading, setLoading ] = useState(true)
     const [ clients, setClients ] = useState([])
+    const [ clientId, setClientId ] = useState(0)
+    const [ employees, setEmployees ] = useState(0)
     const [ serviceItems, setServiceItems ] = useState([])
     const [ nameFilter, setNameFilter ] = useState([])
-    const [ dateFilter, setDateFilter ] = useState([])
-    const [ invoiceFilter, setInvoiceFilter ] = useState([])
     const [ startDate, setStartDate ] = useState('')
     const [ endDate, setEndDate ] = useState('')
     const [ services, setServices ] = useState([])
     const [ invoices, setInvoices ] = useState([])
-    const [ clientId, setClientId ] = useState(0)
+    const [ dateFilter, setDateFilter ] = useState([])
+    const [ invoiceFilter, setInvoiceFilter ] = useState([])
     const [ targetDateRange, setTargetDateRange ] = useState(null)
     const today = new Date()
     const navigate = useNavigate()
@@ -32,7 +33,7 @@ const CreateInvoice = () => {
     }
 
     const isButtonDisabled = clientId === 0 || 
-    isToday(targetDateRange) || 
+    // isToday(targetDateRange) || 
     targetDateRange === null ||
     dateFilter.length === 0
     // console.log(dateFilter)
@@ -43,6 +44,9 @@ const CreateInvoice = () => {
             try {
                 const clientResponse = await axios.get('http://localhost:8000/api/clients')
                 const clientData = clientResponse.data
+
+                const employeeResponse = await axios.get('http://localhost:8000/api/employees')
+                const employeeData = employeeResponse.data
                 
                 const serviceItemResponse = await axios.get('http://localhost:8000/api/service_items')
                 const serviceItemData = serviceItemResponse.data
@@ -54,6 +58,7 @@ const CreateInvoice = () => {
                 const invoiceData = invoiceResponse.data
 
                 setClients(clientData)
+                setEmployees(employeeData)
                 setServiceItems(serviceItemData)
                 setServices(serviceData)
                 setInvoices(invoiceData)
@@ -76,7 +81,7 @@ const CreateInvoice = () => {
         filterServiceItems()
     }, [clientId, serviceItems, startDate, endDate])
     
-    const handleNameFilterChange = (e) => {
+    const handleClientFilterChange = (e) => {
         e.preventDefault()
         setClientId(Number(e.target.value))
     }
@@ -126,6 +131,11 @@ const CreateInvoice = () => {
         return service ? service.price : 'Unknown Price'
     }
 
+    const getEmployeeName = (employeeId) => {
+        const employee = employees.find(employee => employee.id === employeeId)
+        return employee ? employee.full_name: 'Unknown employee'
+    }
+
     const handleSubmit = () => {
         if (invoiceFilter.length === 0) {
             const payload = {
@@ -149,31 +159,33 @@ const CreateInvoice = () => {
     }
 
 
+
+
     return (
         <>
             {loading ? (
                 <div>Loading...</div>
             ) : (
                 <>
-                    <form className='form-control' onSubmit={handleSubmit}>
+                    <form className='container-fluid' onSubmit={handleSubmit}>
                     <h3>Create Invoice</h3>
                     <table className='table'>
                         <thead>
                             <tr>
                                 <td>Select a client</td>
-                                <td>Choose The Date - <em>you cannot register an invoice for today</em></td>
+                                <td>Choose The Date</td>
                                 <td></td>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>
-                                <select className="form-select" value={clientId} onChange={handleNameFilterChange}>
-                                    <option value={0}>select client</option>
-                                    {clients.map((t) => (
-                                        <option key={t.id} value={t.id}>
-                                        {t.full_name}
-                                    </option>
+                                    <select className="form-select" value={clientId} onChange={handleClientFilterChange}>
+                                        <option value={0}>select client</option>
+                                        {clients.map((t) => (
+                                            <option key={t.id} value={t.id}>
+                                            {t.full_name}
+                                        </option>
                                     ))}
                                     </select>
                                 </td>
@@ -184,7 +196,7 @@ const CreateInvoice = () => {
                                     onChange={handleDateFilter}
                                     maxDate={today}
                                     // excludeDates={[today]}
-                                    placeholderText="Select a Date"
+                                    placeholderText="date"
                                     />
                                 </td>
                                 <td>
@@ -202,6 +214,7 @@ const CreateInvoice = () => {
                             <tr>
                                 <td>Sale ID</td>
                                 <td>Services</td>
+                                <td>Employee</td>
                                 <td>Price</td>
                             </tr>
                         </thead>
@@ -210,6 +223,7 @@ const CreateInvoice = () => {
                             <tr key = {item.id}>
                                     <td>{item.id}</td>
                                     <td>{getServiceTitle(item.service_id)}</td>
+                                    <td>{getEmployeeName(item.employee_id)}</td>
                                     <td>{getServicePrice(item.service_id)}</td>
                             </tr>
                                 ))}
