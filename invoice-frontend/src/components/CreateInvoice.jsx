@@ -161,7 +161,7 @@ const CreateInvoice = () => {
                         <thead>
                             <tr>
                                 <td>Select a client</td>
-                                <td>Choose The Date (you cannot register an invoice for today)   </td>
+                                <td>Choose The Date - <em>you cannot register an invoice for today</em></td>
                                 <td></td>
                             </tr>
                         </thead>

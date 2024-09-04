@@ -16,6 +16,7 @@ class ServiceOut(ServiceIn):
     
 
 class ServiceItemIn(BaseModel):
+    employee_id: int
     client_id: int
     service_id: int
 
@@ -30,9 +31,21 @@ class ServiceItemOut(ServiceItemIn):
 class ClientBase(BaseModel):
     full_name: str
     email: str
-
-
+    
 class Client(ClientBase):
+    id: int
+    service_items: list[ServiceItemOut] = []
+
+    class Config:
+        orm_mode = True
+
+
+class EmployeeBase(BaseModel):
+    full_name: str
+    email: str
+
+
+class Employee(EmployeeBase):
     id: int
     is_active: bool
     service_items: list[ServiceItemOut] = []
@@ -42,6 +55,7 @@ class Client(ClientBase):
 
 
 class InvoiceCreate(BaseModel):
+    employee_id: int
     client_id: int
     start_date: datetime
     end_date: datetime
