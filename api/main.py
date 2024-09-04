@@ -6,7 +6,8 @@ from . import (
     routers_clients, 
     routers_services, 
     routers_service_item, 
-    routers_invoices
+    routers_invoices,
+    routers_employees
 )
 
 
@@ -15,6 +16,7 @@ app.include_router(routers_clients.router, tags=["CLIENTS"])
 app.include_router(routers_services.router, tags=["SERVICES"])
 app.include_router(routers_service_item.router, tags=["SERVICE_ITEMS"])
 app.include_router(routers_invoices.router, tags=["INVOICES"])
+app.include_router(routers_employees.router, tags=["EMPLOYEES"])
 
 origins = [
     "http://localhost:5173",

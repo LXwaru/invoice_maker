@@ -6,7 +6,7 @@ from .database import Base
 
 
 class Client(Base):
-    __tablename__ = "employees"
+    __tablename__ = "clients"
 
     id = Column(Integer, primary_key=True)
     full_name = Column(String, unique=True, index=True)
