@@ -7,6 +7,7 @@ const InvoiceDetail = () => {
     const [ invoice, setInvoice ] = useState({})
     const [ clients, setClients ] = useState([])
     const [ services, setServices ] = useState([])
+    const [ employees, setEmployees ] = useState([])
     const {id} = useParams()
     const [ loading, setLoading ] = useState(true)
 
@@ -25,10 +26,15 @@ const InvoiceDetail = () => {
                 const serviceResponse = await axios.get('http://localhost:8000/api/services/')
                 const serviceData = serviceResponse.data
 
+                //fetching employee data
+                const employeeResponse = await axios.get('http://localhost:8000/api/employees/')
+                const employeeData = employeeResponse.data
+
                 //setting state
                 setInvoice(invoiceData)
                 setClients(clientData)
                 setServices(serviceData)
+                setEmployees(employeeData)
                 setLoading(false)
             } catch (error) {
                 console.error('Error fetching invoice:', error)
@@ -71,6 +77,11 @@ const InvoiceDetail = () => {
         return `${formattedDate} - ${formattedTime}`
     }
 
+    const getEmployeeName = (employeeId) => {
+        const employee = employees.find(employee => employee.id === employeeId)
+        return employee ? employee.full_name: 'Unknown employee'
+    }
+
     return (
         <>
         <div className="container-sm" width="200px">
@@ -83,7 +94,7 @@ const InvoiceDetail = () => {
                 <thead>
                     <tr>
                         <td>Service title</td>
-                        <td>Date for services rendered</td>
+                        <td>Date/Time for services rendered</td>
                         <td>Service provided by:</td>
                     </tr>
                 </thead>
@@ -97,7 +108,7 @@ const InvoiceDetail = () => {
                             {formatDateTime(item.date_time)}
                         </td>
                         <td>
-                            {item.employee_id}
+                            {getEmployeeName(item.employee_id)}
                         </td>
                     </tr>
                     ))}

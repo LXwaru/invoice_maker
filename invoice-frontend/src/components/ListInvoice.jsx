@@ -5,6 +5,7 @@ import axios from 'axios'
 const ListInvoices = () => {
     const [ invoices, setInvoices ] = useState([])
     const [ clients, setClients ] = useState([])
+    const [ employees, setEmployees ] = useState([])
 
 
     useEffect(() => {
@@ -12,7 +13,6 @@ const ListInvoices = () => {
         const fetchInvoices = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/api/invoices/')
-                console.log("invoices:", response.data)
                 setInvoices(response.data)
             } catch (error) {
                 console.error('could not fetch invoice', error)
@@ -24,18 +24,25 @@ const ListInvoices = () => {
     useEffect(() => {
         const fetchClients = async () => {
             const response = await axios.get('http://localhost:8000/api/clients/')
-            console.log("clients:", response.data)
             setClients(response.data)
 
         }
         fetchClients()
     }, [])
+
+    useEffect(() => {
+        const fetchEmployees = async () => {
+            const response = await axios.get('http://localhost:8000/api/clients/')
+            setEmployees(response.data)
+        }
+    })
     
 
     const getClientName = (clientId) => {
         const client = clients.find(t => t.id === clientId)
         return client ? client.full_name: 'Unknown client'
     }
+
     
     const displayDate = (dateString) => {
         const date = new Date(dateString)
