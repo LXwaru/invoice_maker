@@ -79,11 +79,31 @@ const InvoiceDetail = () => {
             <h5>Amount Due: ${invoice.amount_due.toFixed(2)}</h5>
             <h5>Paid: {invoice.paid ? 'Yes' : 'No' } </h5>
             <h5>Services:</h5>
-            <ol>
-                {invoice.service_items.map((item) => (
-                    <li key={item.id}>{getServiceTitle(item.service_id)}: {formatDateTime(item.date_time)}</li>
-                ))}
-            </ol>
+            <table className='table'>
+                <thead>
+                    <tr>
+                        <td>Service title</td>
+                        <td>Date for services rendered</td>
+                        <td>Service provided by:</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {invoice.service_items.map((item) => (
+                    <tr key={item.id}>
+                        <td>
+                            {getServiceTitle(item.service_id)}     
+                        </td>
+                        <td>
+                            {formatDateTime(item.date_time)}
+                        </td>
+                        <td>
+                            {item.employee_id}
+                        </td>
+                    </tr>
+                    ))}
+                
+                </tbody>
+            </table>
         </div>
         </>
     )

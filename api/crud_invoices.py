@@ -65,6 +65,7 @@ def create_invoice(
         service_items_out = [
             schemas.ServiceItemOut(
                 id=item.id,
+                employee_id=item.employee_id,
                 client_id=item.client_id,
                 service_id=item.service_id,
                 date_time=item.date_time
