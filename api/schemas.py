@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import Union, List
+from typing import Union, List, Optional
 
 
 class ServiceIn(BaseModel):
@@ -65,6 +65,40 @@ class Invoice(InvoiceCreate):
     amount_due: int
     paid: bool
     service_items: list[ServiceItemOut] = []
+
+    class Config:
+        orm_mode = True
+
+
+class CompanyBase(BaseModel):
+    title: str
+    description: Union[str, None] = None
+
+
+class CompanyCreate(CompanyBase):
+    pass
+
+
+class Company(CompanyBase):
+    id: int
+    admin_id: int
+
+    class Config:
+        orm_mode = True
+
+
+class UserBase(BaseModel):
+    username: str
+
+
+class UserCreate(UserBase):
+    password: str
+
+
+class User(UserBase):
+    id: int
+    is_active: bool
+    company: Optional[Company] = None
 
     class Config:
         orm_mode = True

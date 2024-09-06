@@ -17,7 +17,7 @@ const Nav = () => {
                 <div className="offcanvas-body">
                     <ul className="navbar-nav justify-content-end flex-grow-1 pe-3" data-bs-dismiss="offcanvas">
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/">CLASS SIGN IN</NavLink>
+                            <NavLink className="nav-link" to="/serviceentry">CLASS SIGN IN</NavLink>
                         </li>
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/createinvoice">CREATE INVOICE</NavLink>

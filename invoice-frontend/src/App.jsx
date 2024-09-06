@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
+import LandingPage from './components/LandingPage'
 import ServiceEntry from './components/ServiceEntry'
 import CreateInvoice from './components/CreateInvoice'
 import ListInvoices from './components/ListInvoice'
@@ -19,7 +20,8 @@ function App() {
         <Nav />
         <div>
             <Routes>
-              <Route path='/' element={<ServiceEntry />} />
+            <Route path='/' element={<LandingPage />} />
+              <Route path='/serviceentry' element={<ServiceEntry />} />
               <Route path='/createinvoice' element={< CreateInvoice />} />
               <Route path='/listinvoice' element={< ListInvoices />} />
               <Route path='/invoicedetail/:id' element={<InvoiceDetail />} />
